@@ -1,17 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gradproject/constants.dart';
-import 'package:gradproject/controllers/MenuAppController.dart';
-import 'package:gradproject/login.dart';
-import 'package:gradproject/login_page.dart';
-import 'package:gradproject/reg.dart';
-import 'package:gradproject/screens/main/main_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:gradproject/login.dart';
+import 'package:gradproject/reg.dart';
 import 'package:gradproject/signup.dart';
-import 'package:provider/provider.dart';
+import 'dashboard.dart'; // Import the dashboard page
 
-void main() async{
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options:const FirebaseOptions(
@@ -20,33 +15,13 @@ void main() async{
        messagingSenderId:  "503039862204",
         projectId: "insider-web-a9a12")
   );
-  runApp(
-    MaterialApp(
-    debugShowCheckedModeBanner: false,
+  runApp(MaterialApp(
     home: MyApp(),
   ));
 }
 
+
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return ProviderScope(
-      child:
-    MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Admin Panel',
-      theme: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: bgColor,
-        textTheme: GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme)
-            .apply(bodyColor: Colors.white),
-        canvasColor: secondaryColor,
-      ),
-      home: MyAppp(),),
-    );
-  }
-}
-class MyAppp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,7 +75,7 @@ class MyAppp extends StatelessWidget {
                     minWidth: double.infinity,
                     height: 60,
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPagee()));
 
                     },
                     // defining the shape
@@ -118,36 +93,6 @@ class MyAppp extends StatelessWidget {
                       ),
                     ),
                   ),
-      //              MaterialButton(
-      //               minWidth: double.infinity,
-      //               height: 60,
-      //               onPressed: () {
-      //                 Navigator.push(context, MaterialPageRoute(builder: (context) => MultiProvider(
-      //   providers: [
-      //     ChangeNotifierProvider(
-      //       create: (context) => MenuAppController(),
-      //     ),
-      //   ],
-      //   child: MainScreen(),
-      // ),));
-
-      //               },
-      //               // defining the shape
-      //               shape: RoundedRectangleBorder(
-      //                 side: const BorderSide(
-      //                   color: Colors.black
-      //                 ),
-      //                 borderRadius: BorderRadius.circular(50)
-      //               ),
-      //               child: const Text(
-      //                 "Dashboard",
-      //                 style: TextStyle(
-      //                   fontWeight: FontWeight.w600,
-      //                   fontSize: 18
-      //                 ),
-      //               ),
-      //             ),
-                  
                   // creating the signup button
                   const SizedBox(height:20),
                   MaterialButton(
@@ -155,7 +100,7 @@ class MyAppp extends StatelessWidget {
                     height: 60,
                     onPressed: (){
                       
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> SignupPage()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> RegistrationPage()));
 
                     },
                     color: const Color(0xff0095FF),

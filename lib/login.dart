@@ -1,9 +1,39 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gradproject/Dashboard.dart';
 
-class LoginPage extends StatelessWidget {
-  
+class LoginPagee extends StatelessWidget {
+    final TextEditingController _passwordController = TextEditingController();
+    final TextEditingController _emailController = TextEditingController();
+  static Future<User?> loginUsingEmailPassword(
+      {required String email,
+      required String password,
+      required BuildContext context}) async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    User? user;
+    try {
+      UserCredential userCredential = await auth.signInWithEmailAndPassword(
+          email: email, password: password);
+      user = userCredential.user;
+    } on FirebaseAuthException catch (e) {
+      if (e.code == "user-not-found") {
+        print("No user found");
+        Fluttertoast.showToast(
+          msg: "No User Found",
+          //backgroundColor: mintColors
+        );
+      } else if (e.code == 'wrong-password') {
+        print("wrong password");
+        Fluttertoast.showToast(
+          msg: "Wrong Password",
+          //backgroundColor: mintColors
+        );
+      }
+    }
+    return user;
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,8 +77,15 @@ class LoginPage extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 40),
                   child: Column(
                     children: <Widget>[
-                      inputFile(label: "Email"),
-                      inputFile(label: "Password", obscureText: true)
+                     TextField(
+              controller: _emailController,
+              decoration: InputDecoration(labelText: 'Email'),
+            ),
+                      TextField(
+              controller: _passwordController,
+              decoration: InputDecoration(labelText: 'Password'),
+              obscureText: true,
+            ),
                     ],
                   ),
                 ),
@@ -73,7 +110,11 @@ class LoginPage extends StatelessWidget {
                       child: MaterialButton(
                         minWidth: double.infinity,
                         height: 60,
-                        onPressed: () {
+                        onPressed: () async {
+                           User? user = await loginUsingEmailPassword(
+                                      email: _emailController.text,
+                                      password: _passwordController.text,
+                                      context: context);
                        Navigator.push(context, MaterialPageRoute(builder: (context) => DashboardPage()));
                         },
                         color: Color(0xff0095FF),

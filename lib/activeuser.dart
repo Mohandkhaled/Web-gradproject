@@ -9,5 +9,4 @@ class ActiveUserPage extends StatelessWidget {
       ),
     
     );
-  }
-}
+  }}

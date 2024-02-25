@@ -1,165 +1,187 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
+import 'package:gradproject/login_page.dart';
 
-class SignupPage extends StatelessWidget {
+class SignupPage extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.white,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: Icon(Icons.arrow_back_ios,
-            size: 20,
-            color: Colors.black,),
-
-
-        ), systemOverlayStyle: SystemUiOverlayStyle.dark,
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 40),
-          height: MediaQuery.of(context).size.height - 50,
-          width: double.infinity,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Column(
-                children: <Widget>[
-                  Text("Sign up",
-                  style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-
-                  ),),
-                  SizedBox(height: 20,),
-                  Text("Create an account, It's free ",
-                    style: TextStyle(
-                        fontSize: 15,
-                        color:Colors.grey[700]),)
-
-
-                ],
-              ),
-              Column(
-                children: <Widget>[
-                  inputFile(label: "Username"),
-                  inputFile(label: "Email"),
-                  inputFile(label: "Password", obscureText: true),
-                  inputFile(label: "Confirm Password ", obscureText: true),
-                ],
-              ),
-              Container(
-                padding: EdgeInsets.only(top: 3, left: 3),
-                decoration:
-                BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    border: Border(
-                      bottom: BorderSide(color: Colors.black),
-                      top: BorderSide(color: Colors.black),
-                      left: BorderSide(color: Colors.black),
-                      right: BorderSide(color: Colors.black),
-
-
-
-                    )
-
-                ),
-                child: MaterialButton(
-                  minWidth: double.infinity,
-                  height: 60,
-                  onPressed: () {},
-                  color: Color(0xff0095FF),
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50),
-
-                  ),
-                  child: Text(
-                    "Sign up", style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 18,
-                    color: Colors.white,
-
-                  ),
-                  ),
-
-                ),
-
-
-
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text("Already have an account?"),
-                  Text(" Login", style:TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 18
-                  ),
-                  )
-                ],
-              )
-
-
-
-            ],
-
-          ),
-
-
-        ),
-
-      ),
-
-    );
-  }
+  State<SignupPage> createState() => _SignupPageState();
 }
 
+class _SignupPageState extends State<SignupPage> {
+   final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _mobileController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
 
+  // Reference to the Firestore collection
+  final CollectionReference _userCollection =
+      FirebaseFirestore.instance.collection('User');
 
-// we will be creating a widget for text field
-Widget inputFile({label, obscureText = false})
-{
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: <Widget>[
-      Text(
-        label,
-        style: TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w400,
-            color:Colors.black87
-        ),
+  Future<void> _registerUser() async {
+    try {
+       await FirebaseAuth.instance
+                                          .createUserWithEmailAndPassword(
+                                              email: _emailController.text,
+                                              password:
+                                                  _passwordController.text);
+      // Check if passwords match
+      if (_passwordController.text != _confirmPasswordController.text) {
+        // Passwords don't match
+        // Handle the error or show a message
+        return;
+      }
 
+      // Add user data to Firestore
+      await _userCollection.add({
+        'firstname': _firstNameController.text,
+        'lastname': _lastNameController.text,
+        'email': _emailController.text,
+        'mobile': _mobileController.text,
+        'address': _addressController.text,
+        'password': _passwordController.text,
+        'confirmPassword': _confirmPasswordController.text,
+        // Add other fields as needed
+      });
+
+      // User registered successfully
+      // You can navigate to another screen or show a success message
+    } catch (e) {
+      // Handle the error
+      print('Error registering user: $e');
+    }
+  }
+  @override
+  Widget build(BuildContext context) {
+    var offset = const Offset(0, 3);
+    var textStyle = const TextStyle(
+      fontSize: 24,
+      fontWeight: FontWeight.bold,
+      color: Colors.blue,
+    );
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Sign Up Page'),
       ),
-      SizedBox(
-        height: 5,
-      ),
-      TextField(
-        obscureText: obscureText,
-        decoration: InputDecoration(
-            contentPadding: EdgeInsets.symmetric(vertical: 0,
-                horizontal: 10),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color:Color.fromARGB(255, 104, 99, 99)
-                  //color: Colors.grey[400]
+      body: Center(
+        child: Container(
+          padding: const EdgeInsets.all(20),
+         // width: 300,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+               // color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 2,
+                blurRadius: 5,
+                offset: offset,
               ),
-
-            ),
-            border: OutlineInputBorder(
-                borderSide: BorderSide(                color:Color.fromARGB(255, 104, 99, 99))
-            )
+            ],
+            //color: Colors.white,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Text(
+                'Sign Up',
+                style: textStyle,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 20),
+              TextFormField(
+                  controller:_firstNameController,
+                decoration: const InputDecoration(
+                  labelText: 'First Name',
+                  prefixIcon: Icon(Icons.person),
+                  border: OutlineInputBorder(),
+                
+                ),
+              ),
+                TextFormField(
+                  controller:_lastNameController,
+                decoration: const InputDecoration(
+                  labelText: 'Last Name',
+                  prefixIcon: Icon(Icons.person),
+                  border: OutlineInputBorder(),
+                
+                ),
+              ),
+                TextFormField(
+                  controller:_mobileController,
+                decoration: const InputDecoration(
+                  labelText: 'Mobile Number',
+                  prefixIcon: Icon(Icons.numbers),
+                  border: OutlineInputBorder(),
+                
+                ),
+              ),
+                TextFormField(
+                  controller:_addressController,
+                decoration: const InputDecoration(
+                  labelText: 'Address',
+                  prefixIcon: Icon(Icons.location_city),
+                  border: OutlineInputBorder(),
+                
+                ),
+              ),
+              const SizedBox(height: 20),
+              TextFormField(
+                 controller: _emailController,
+                decoration: const InputDecoration(
+                  labelText: 'Email',
+                  prefixIcon: Icon(Icons.email),
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 20),
+              TextFormField(
+                  controller: _passwordController,
+                obscureText: true,
+                decoration: const InputDecoration(
+                  labelText: 'Password',
+                  prefixIcon: Icon(Icons.lock),
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 20),
+              TextFormField(
+                controller: _confirmPasswordController,
+                obscureText: true,
+                decoration: const InputDecoration(
+                  labelText: 'Confirm Password',
+                  prefixIcon: Icon(Icons.lock),
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _registerUser,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                ),
+                child: const Text('Sign Up'),
+              ),
+              const SizedBox(height: 10),
+              TextButton(
+                 onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+                },
+                child: const Text(
+                  'Already have an account? Login',
+                  style: TextStyle(
+                    color: Colors.blue,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
-      SizedBox(height: 10,)
-    ],
-  );
+    );
+  }
 }

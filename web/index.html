@@ -23,38 +23,18 @@
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="gradproject">
+  <meta name="apple-mobile-web-app-title" content="gradproject3">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
 
-  <title>gradproject</title>
+  <title>gradproject3</title>
   <link rel="manifest" href="manifest.json">
 
-  
+
+
   <script>
-    // Import the functions you need from the SDKs you need
-    import { initializeApp } from "firebase/app";
-    import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-    const firebaseConfig = {
-    apiKey: "AIzaSyDasE3LMxheAKkNxPLh9LNy0h3qN0awQIY",
-   authDomain: "insider-web-a9a12.firebaseapp.com",
-    projectId: "insider-web-a9a12",
-   storageBucket: "insider-web-a9a12.appspot.com",
-    messagingSenderId: "503039862204",
-    appId: "1:503039862204:web:f103eceb6dc9e41a25f7b9",
-   measurementId: "G-170NWYWC6P"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
     // The value below is injected by flutter build, do not touch.
     const serviceWorkerVersion = null;
   </script>
@@ -62,6 +42,41 @@ const analytics = getAnalytics(app);
   <script src="flutter.js" defer></script>
 </head>
 <body>
+
+
+  <script>
+    // Import the functions you need from the SDKs you need
+    import { } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-installations.js"
+   import { } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js"
+   import { } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js"
+   import { } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js"
+   import { } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-functions.js"
+   import { } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js"
+
+
+
+
+
+
+   // TODO: Add SDKs for Firebase products that you want to use
+   // https://firebase.google.com/docs/web/setup#available-libraries
+   
+   // Your web app's Firebase configuration
+   // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+   const firebaseConfig = {
+     apiKey: "AIzaSyDasE3LMxheAKkNxPLh9LNy0h3qN0awQIY",
+     authDomain: "insider-web-a9a12.firebaseapp.com",
+     projectId: "insider-web-a9a12",
+     storageBucket: "insider-web-a9a12.appspot.com",
+     messagingSenderId: "503039862204",
+     appId: "1:503039862204:web:f103eceb6dc9e41a25f7b9",
+     measurementId: "G-170NWYWC6P"
+   };
+   
+   // Initialize Firebase
+   const app = initializeApp(firebaseConfig);
+   const analytics = getAnalytics(app);
+     </script>
   <script>
     window.addEventListener('load', function(ev) {
       // Download main.dart.js
@@ -77,8 +92,7 @@ const analytics = getAnalytics(app);
       });
     });
   </script>
-  <script type="module">
-
-  </script>
+  
+  
 </body>
 </html>

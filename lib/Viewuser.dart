@@ -1,5 +1,3 @@
-// pages/view_user_page.dart
-
 import 'package:flutter/material.dart';
 
 class ViewUserPage extends StatelessWidget {
