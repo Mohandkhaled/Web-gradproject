@@ -9,8 +9,8 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
-   final TextEditingController _firstNameController = TextEditingController();
-  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _firstnameController = TextEditingController();
+  final TextEditingController _lastnameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _mobileController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -37,8 +37,8 @@ class _SignupPageState extends State<SignupPage> {
 
       // Add user data to Firestore
       await _userCollection.add({
-        'firstname': _firstNameController.text,
-        'lastname': _lastNameController.text,
+        'firstname':_firstnameController.text,
+        'lastname':_lastnameController.text,
         'email': _emailController.text,
         'mobile': _mobileController.text,
         'address': _addressController.text,
@@ -94,7 +94,7 @@ class _SignupPageState extends State<SignupPage> {
               ),
               const SizedBox(height: 20),
               TextFormField(
-                  controller:_firstNameController,
+                  controller:_firstnameController,
                 decoration: const InputDecoration(
                   labelText: 'First Name',
                   prefixIcon: Icon(Icons.person),
@@ -103,7 +103,7 @@ class _SignupPageState extends State<SignupPage> {
                 ),
               ),
                 TextFormField(
-                  controller:_lastNameController,
+                  controller:_lastnameController,
                 decoration: const InputDecoration(
                   labelText: 'Last Name',
                   prefixIcon: Icon(Icons.person),

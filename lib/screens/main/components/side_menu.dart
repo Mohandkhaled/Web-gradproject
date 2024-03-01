@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gradproject/Dashboard.dart';
+import 'package:gradproject/profile_screen.dart';
 import 'package:gradproject/view_account.dart';
 import 'package:gradproject/viewuserprofile.dart';
 
@@ -38,13 +39,22 @@ class SideMenu extends StatelessWidget {
             svgSrc: "assets/icons/menu_profile.svg",
             press: () {    Navigator.push(
     context,
-    MaterialPageRoute(builder: (context) =>  ViewUsersPage()),
+    MaterialPageRoute(builder: (context) =>  ProfileScreen()),
   );},
           ),
           DrawerListTile(
             title: "Settings",
             svgSrc: "assets/icons/menu_setting.svg",
             press: () {},
+          ),
+          
+          DrawerListTile(
+            title: "Edit User",
+            svgSrc: "assets/icons/menu_setting.svg",
+            press: () {Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) =>  ViewUsersPage()),
+  );},
           ),
         ],
       ),

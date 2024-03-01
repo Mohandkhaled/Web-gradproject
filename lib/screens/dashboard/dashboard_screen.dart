@@ -1,3 +1,4 @@
+import 'package:gradproject/admin/search_user.dart';
 import 'package:gradproject/responsive.dart';
 import 'package:gradproject/screens/dashboard/components/my_fields.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,7 @@ class DashboardScreen extends StatelessWidget {
         padding: EdgeInsets.all(defaultPadding),
         child: Column(
           children: [
+           // FirebaseSearchUserScreen(),
             Header(),
             SizedBox(height: defaultPadding),
             Row(
