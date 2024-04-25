@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'dart:io';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gradproject/constants.dart';
 import 'package:gradproject/controllers/MenuAppController.dart';
@@ -6,19 +9,16 @@ import 'package:gradproject/login.dart';
 import 'package:gradproject/login_page.dart';
 import 'package:gradproject/reg.dart';
 import 'package:gradproject/screens/dashboard/components/anomaly_detection_screen.dart';
-import 'package:gradproject/screens/main/main_screen.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:gradproject/signup.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: const FirebaseOptions(
-      apiKey: "AIzaSyDasE3LMxheAKkNxPLh9LNy0h3qN0awQIY",
+    apiKey: "AIzaSyDasE3LMxheAKkNxPLh9LNy0h3qN0awQIY",
        appId: "1:503039862204:web:f103eceb6dc9e41a25f7b9", 
        messagingSenderId:  "503039862204",
         projectId: "insider-web-a9a12"

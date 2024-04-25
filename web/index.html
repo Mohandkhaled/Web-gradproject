@@ -77,6 +77,40 @@
    const app = initializeApp(firebaseConfig);
    const analytics = getAnalytics(app);
      </script>
+     <!-- templates/index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anomaly Detection Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1>Anomaly Detection Results</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Person ID</th>
+                <th>Content ID</th>
+                <th>Anomaly</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for result in results %}
+            <tr>
+                <td>{{ result['personId'] }}</td>
+                <td>{{ result['contentId'] }}</td>
+                <td>{% if result['anomaly'] == 1 %}Abnormal{% else %}Normal{% endif %}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
+
+
   <script>
     window.addEventListener('load', function(ev) {
       // Download main.dart.js

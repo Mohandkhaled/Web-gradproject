@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gradproject/models/anomaly_data.dart';
-import 'package:gradproject/services/api_services.dart';
-
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class AnomalyDetectionScreen extends StatefulWidget {
   @override
@@ -9,25 +8,36 @@ class AnomalyDetectionScreen extends StatefulWidget {
 }
 
 class _AnomalyDetectionScreenState extends State<AnomalyDetectionScreen> {
-  late Future<AnomalyData> _anomalyData;
-
-  final String baseUrl = 'http://192.168.1.22:5000'; // Update with your Flask API URL
-
-  Map<String, dynamic> _formData = {
-    'timestamp': '',
-    'eventType': '',
-    'contentId': '',
-    'personId': '',
-    'sessionId': '',
-    'userAgent': '',
-    'userRegion': '',
-    'userCountry': '',
-  };
+  Map<String, dynamic>? results;
+  bool isLoading = true;
+  String error = '';
 
   @override
   void initState() {
     super.initState();
-    _anomalyData = ApiService(baseUrl).fetchAnomalyData(_formData);
+    fetchAnomalyDetectionResults();
+  }
+
+  Future<void> fetchAnomalyDetectionResults() async {
+    try {
+      final response = await http.get(Uri.parse('http://127.0.0.1:5000'));
+      if (response.statusCode == 200) {
+        setState(() {
+          results = jsonDecode(response.body);
+          isLoading = false;
+        });
+      } else {
+        setState(() {
+          error = 'Failed to load data: ${response.statusCode}';
+          isLoading = false;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        error = 'Error: $e';
+        isLoading = false;
+      });
+    }
   }
 
   @override
@@ -36,37 +46,55 @@ class _AnomalyDetectionScreenState extends State<AnomalyDetectionScreen> {
       appBar: AppBar(
         title: Text('Anomaly Detection Results'),
       ),
-      body: Center(
-        child: FutureBuilder<AnomalyData>(
-          future: _anomalyData,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator();
-            } else if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
-            } else {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text('Anomaly Scores (SVM): ${snapshot.data!.anomalyScoresSvm}'),
-                  Text('Anomaly Scores (Isolation Forest): ${snapshot.data!.anomalyScoresIforest}'),
-                  Text('Cluster Labels (KMeans): ${snapshot.data!.clusterLabelsKmeans}'),
-                  // Display other anomaly detection data as needed
-                ],
-              );
-            }
-          },
-        ),
+      body: isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : error.isNotEmpty
+              ? _buildErrorWidget()
+              : results != null
+                  ? _buildResultsWidget()
+                  : Center(
+                      child: Text('No Results'),
+                    ),
+    );
+  }
+
+  Widget _buildErrorWidget() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'An Error Occurred',
+            style: TextStyle(fontSize: 24),
+          ),
+          SizedBox(height: 20),
+          Text(
+            error,
+            style: TextStyle(fontSize: 18, color: Colors.red),
+          ),
+        ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Update form data and fetch anomaly data
-          setState(() {
-            _anomalyData = ApiService(baseUrl).fetchAnomalyData(_formData);
-          });
-        },
-        child: Icon(Icons.refresh),
+    );
+  }
+
+  Widget _buildResultsWidget() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'Anomaly Detection Results',
+            style: TextStyle(fontSize: 24),
+          ),
+          // Display results here using results map
+          // Customize the layout as needed
+          // Example:
+          Text('Isolation Forest Anomaly Scores: ${results!['anomaly_scores_iforest']}'),
+          Text('SVM Anomaly Scores: ${results!['anomaly_scores_svm']}'),
+          Text('Cluster Labels: ${results!['cluster_labels']}'),
+        ],
       ),
     );
   }
