@@ -36,7 +36,7 @@ class _SignupPageState extends State<SignupPage> {
       }
 
       // Add user data to Firestore
-      await _userCollection.add({
+      await _userCollection.doc(FirebaseAuth.instance.currentUser!.uid).set({
         'firstname':_firstnameController.text,
         'lastname':_lastnameController.text,
         'email': _emailController.text,
@@ -44,6 +44,7 @@ class _SignupPageState extends State<SignupPage> {
         'address': _addressController.text,
         'password': _passwordController.text,
         'confirmPassword': _confirmPasswordController.text,
+        'id': FirebaseAuth.instance.currentUser!.uid,
         // Add other fields as needed
       });
 

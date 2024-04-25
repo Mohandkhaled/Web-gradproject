@@ -1,162 +1,88 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+class ProfilePage extends StatefulWidget {
+  @override
+  _ProfilePageState createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) {
-    var isDark = Theme.of(context).brightness == Brightness.dark;
-
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.arrow_back_ios),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Profile'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.exit_to_app),
+            onPressed: () async {
+              await _auth.signOut();
+              Navigator.of(context).pop();
+            },
           ),
-          title: const Text('Profile'),
-          actions: [
-            IconButton(
-              onPressed: () {},
-              icon: Icon(isDark ? Icons.wb_sunny : Icons.nightlight_round),
-            )
-          ],
-        ),
-        body: SingleChildScrollView(
-          child: Container(
-            padding: const EdgeInsets.all(20),
+        ],
+      ),
+      body: FutureBuilder<DocumentSnapshot>(
+        future: _firestore.collection('User').doc(_auth.currentUser!.uid).get(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+
+          if (!snapshot.hasData || !snapshot.data!.exists) {
+            // User data not found or document doesn't exist
+            return Center(child: Text('User data not found.'));
+          }
+
+          var userData = snapshot.data!.data() as Map<String, dynamic>;
+          if (userData == null) {
+            // Handle the case where the data is not in the expected format
+            return Center(child: Text('Invalid user data.'));
+          }
+
+          return Center(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(
-                  width: 120,
-                  height: 120,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(100),
-                    child: Image.network(
-                      "assets/images/profile_pic.png",
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+                CircleAvatar(
+                  radius: 80,
+                  backgroundImage: NetworkImage('URL_TO_USER_PROFILE_PICTURE'),
                 ),
-                const SizedBox(height: 10),
-                Text(
-                  'Profile Heading',
-                  style: Theme.of(context).textTheme.headline4,
-                ),
-                Text(
-                  'Profile Subheading',
-                  style: Theme.of(context).textTheme.bodyText2,
-                ),
-                const SizedBox(height: 20),
-                SizedBox(
-                  width: 200,
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                    ),
-                    child: const Text(
-                      'Edit Profile',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 30),
-                const Divider(),
-                const SizedBox(height: 10),
-                ProfileMenuFlutter(
-                  title: "Settings",
-                  icon: Icons.menu_book,
-                  onPress: () {},
-                ),
-                ProfileMenuFlutter(
-                  title: "Billing Details",
-                  icon: Icons.wallet_membership,
-                  onPress: () {},
-                ),
-                ProfileMenuFlutter(
-                  title: "Security Analyst",
-                  icon: Icons.verified_user,
-                  onPress: () {},
-                ),
-                const Divider(),
-                const SizedBox(height: 10),
-                ProfileMenuFlutter(
-                  title: "Information",
-                  icon: Icons.info,
-                  onPress: () {},
-                ),
-                ProfileMenuFlutter(
-                  title: "Logout",
-                  icon: Icons.exit_to_app,
-                  textColor: Colors.red,
-                  endIcon: false,
-                  onPress: () {},
-                ),
+                SizedBox(height: 20),
+                _buildInfoItem('Name', '${userData['firstname']} ${userData['lastname']}'),
+                _buildInfoItem('Mobile', '${userData['mobile']}'),
+                _buildInfoItem('Email', '${userData['email']}'),
               ],
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }
-}
 
-class ProfileMenuFlutter extends StatelessWidget {
-  const ProfileMenuFlutter({
-    Key? key,
-    required this.title,
-    required this.icon,
-    required this.onPress,
-    this.endIcon = true,
-    this.textColor,
-  }) : super(key: key);
-
-  final String title;
-  final IconData icon;
-  final VoidCallback onPress;
-  final bool endIcon;
-  final Color? textColor;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      onTap: onPress,
-      leading: Container(
-        width: 40,
-        height: 40,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(100),
-          color: Theme.of(context).primaryColor.withOpacity(0.1),
+  Widget _buildInfoItem(String title, String value) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text(
+          title,
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.blueAccent, // Adjust color as needed
+          ),
         ),
-        child: Icon(icon, color: Theme.of(context).primaryColor),
-      ),
-      title: Text(
-        title,
-        style: Theme.of(context)
-            .textTheme
-            .bodyText1
-            ?.apply(color: textColor),
-      ),
-      trailing: endIcon
-          ? Container(
-              width: 30,
-              height: 30,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(100),
-                color: Colors.grey.withOpacity(0.1),
-              ),
-              child: const Icon(
-                Icons.mediation,
-                size: 18.0,
-                color: Colors.grey,
-              ),
-            )
-          : null,
+        SizedBox(height: 8),
+        Text(
+          value,
+          style: TextStyle(fontSize: 16),
+        ),
+        SizedBox(height: 20),
+      ],
     );
   }
 }

@@ -27,28 +27,28 @@ environment:
 # dependencies can be manually updated by changing the version numbers below to
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
-
 dependencies:
+  cloud_firestore: ^4.16.0
+  cupertino_icons: ^1.0.6
+  file_picker: ^8.0.0+1
+  firebase_auth: ^4.17.5
+  firebase_core: ^2.28.0
+  firebase_database: ^10.4.6
+  firebase_storage: ^11.6.6
+  fl_chart: ^0.67.0
   flutter:
     sdk: flutter
   flutter_riverpod: ^2.4.10
-  fluttertoast: ^8.2.4
-  cloud_firestore: ^4.15.5
-  cupertino_icons: ^1.0.6
-  firebase_auth: ^4.17.5
-  firebase_core: ^2.25.4
-  firebase_database: ^10.4.6
-  google_sign_in: ^6.2.1
-  google_fonts: ^4.0.4
   flutter_svg: ^2.0.5
-  fl_chart: ^0.62.0
+  fluttertoast: ^8.2.4
+  google_fonts: ^4.0.4
+  google_sign_in: ^6.2.1
+  http: ^1.2.1
   provider: ^6.0.5
-  firebase_storage: ^11.6.6
 dev_dependencies:
   flutter_lints: ^3.0.0
   flutter_test:
     sdk: flutter
-  
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

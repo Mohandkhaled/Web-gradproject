@@ -20,7 +20,7 @@ class UserModel {
   // Factory method to create UserModel from Firestore data
   factory UserModel.fromFirestore(Map<String, dynamic> data, String uid) {
     return UserModel(
-      uid: uid,
+      uid: data['id'] ?? '',
       firstname: data['firstname'] ?? '',  // Updated key to 'firstName'
       lastname: data['lastname'] ?? '',    // Updated key to 'lastName'
       email: data['email'] ?? '',

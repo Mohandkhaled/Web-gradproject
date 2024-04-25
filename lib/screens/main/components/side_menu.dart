@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:gradproject/Dashboard.dart';
+import 'package:gradproject/login_page.dart';
 import 'package:gradproject/profile_screen.dart';
-import 'package:gradproject/view_account.dart';
+import 'package:gradproject/screens/dashboard/components/anomaly_detection_screen.dart';
 import 'package:gradproject/viewuserprofile.dart';
-
+import 'package:gradproject/parsing_results.dart';
 class SideMenu extends StatelessWidget {
   const SideMenu({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class SideMenu extends StatelessWidget {
       child: ListView(
         children: [
           DrawerHeader(
-            child: Image.asset("assets/images/logo.png"),
+            child: Image.asset("assets/images/logo3.PNG"),
           ),
           DrawerListTile(
             title: "Dashboard",
@@ -39,14 +39,10 @@ class SideMenu extends StatelessWidget {
             svgSrc: "assets/icons/menu_profile.svg",
             press: () {    Navigator.push(
     context,
-    MaterialPageRoute(builder: (context) =>  ProfileScreen()),
+    MaterialPageRoute(builder: (context) =>  ProfilePage()),
   );},
           ),
-          DrawerListTile(
-            title: "Settings",
-            svgSrc: "assets/icons/menu_setting.svg",
-            press: () {},
-          ),
+
           
           DrawerListTile(
             title: "Edit User",
@@ -56,6 +52,19 @@ class SideMenu extends StatelessWidget {
     MaterialPageRoute(builder: (context) =>  ViewUsersPage()),
   );},
           ),
+          DrawerListTile(
+            title: "Detect Anomalies",
+            svgSrc: "assets/icons/menu_setting.svg",
+            press: () {Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => AnomalyDetectionScreen()),
+  );},
+          ),
+          DrawerListTile(
+            title: "Settings",
+            svgSrc: "assets/icons/menu_setting.svg",
+            press: () {},
+          ),          
         ],
       ),
     );
@@ -64,12 +73,12 @@ class SideMenu extends StatelessWidget {
 
 class DrawerListTile extends StatelessWidget {
   const DrawerListTile({
-    Key? key,
+    super.key,
     // For selecting those three line once press "Command+D"
     required this.title,
     required this.svgSrc,
     required this.press,
-  }) : super(key: key);
+  });
 
   final String title, svgSrc;
   final VoidCallback press;
@@ -81,12 +90,12 @@ class DrawerListTile extends StatelessWidget {
       horizontalTitleGap: 0.0,
       leading: SvgPicture.asset(
         svgSrc,
-        colorFilter: ColorFilter.mode(Colors.white54, BlendMode.srcIn),
+        colorFilter: const ColorFilter.mode(Colors.white54, BlendMode.srcIn),
         height: 16,
       ),
       title: Text(
         title,
-        style: TextStyle(color: Colors.white54),
+        style: const TextStyle(color: Colors.white54),
       ),
     );
   }

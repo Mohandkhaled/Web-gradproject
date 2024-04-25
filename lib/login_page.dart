@@ -110,7 +110,7 @@ static Future<User?> loginUsingEmailPassword(
                                   print(user);
                                   if (user != null &&
                                       emailController.text ==
-                                          "insiders@gmail.com") {
+                                          "security@gmail.com") {
                                     Navigator.push(context, MaterialPageRoute(builder: (context) => MultiProvider(
         providers: [
           ChangeNotifierProvider(

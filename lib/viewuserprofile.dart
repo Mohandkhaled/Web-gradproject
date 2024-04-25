@@ -61,23 +61,8 @@ class ViewUsersPage extends ConsumerWidget {
                   elevation: 5,
                   margin: const EdgeInsets.all(8.0),
                   child: ListTile(
-                    leading: Container(
-                      width: 80,
-                      height: 80,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          width: 2,
-                          color: Colors.white,
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            spreadRadius: 2,
-                            blurRadius: 10,
-                            color: Colors.black.withOpacity(0.1),
-                          )
-                        ],
-                      ),
-                    ),
+                    // Remove the Container with width, height, and decoration
+                    leading: Icon(Icons.person, size: 40), // You can use a default icon or customize as needed
                     title: Text(
                       "${user.firstname} ${user.lastname}",
                       style: TextStyle(
