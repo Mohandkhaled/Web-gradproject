@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Anomaly Detection Counts</title>
+    <style>
+        table {
+            font-family: Arial, sans-serif;
+            border-collapse: collapse;
+            width: 50%;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .button-container {
+            margin-top: 20px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Anomaly Detection Counts</h2>
+    
+    <!-- Display counts in a table -->
+    <table>
+        <tr>
+            <th>Anomaly</th>
+            <th>Count</th>
+        </tr>
+        {% for row in counts %}
+        <tr>
+            <td>{{ row.Anomaly }}</td>
+            <td>{{ row.Count }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <!-- Button container for navigation -->
+    <div class="button-container">
+        <a href="/processed_data_svm"><button>View One-Class SVM Results</button></a>
+        <a href="/processed_data_isoforest"><button>View Isolation Forest Results</button></a>
+        <a href="/processed_data_kmeans"><button>View K-Means Results</button></a>
+    </div>
+</body>
+</html>

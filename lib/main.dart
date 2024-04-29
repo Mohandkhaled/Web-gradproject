@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gradproject/screens/dashboard/components/detect_anomalies_page.dart';
 import 'dart:io';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -8,7 +9,6 @@ import 'package:gradproject/controllers/MenuAppController.dart';
 import 'package:gradproject/login.dart';
 import 'package:gradproject/login_page.dart';
 import 'package:gradproject/reg.dart';
-import 'package:gradproject/screens/dashboard/components/anomaly_detection_screen.dart';
 import 'package:gradproject/signup.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -140,7 +140,7 @@ class MyAppp extends StatelessWidget {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => AnomalyDetectionScreen()),
+                            MaterialPageRoute(builder: (context) => DetectAnomaliesPage()),
                           );
                         },
                         child: Text('Go to Anomaly Detection'),
